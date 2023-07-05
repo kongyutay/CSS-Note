@@ -1,0 +1,768 @@
+CSS
+文字属性
+	字体大小 font-size
+	字体粗细 font-weght
+	字体倾斜 font-style: normal/italic
+	行高	line-height
+	字体族 font-family
+	字体复合属性 font
+	文本缩进 text-indent: px/em （em为当前标签的字号大小）
+	文本对其 text-align: center/left/right （不影响标签位置）， 可以给父级div写上，居中图片和文字
+	修饰线 text-decoration: none/underline/line-through/overline
+	颜色 color: english-word color/rgb/rgba/16进制
+	
+背景属性
+	背景色 background-color
+	背景图 background-image: url();
+	背景图平铺方式 background-repeat: no-repeat/repeat/repeat-x/repeat-y
+	背景图位置 background-position:
+		左上角
+		background-position: 0 0;
+		background-position: left top;
+		background-position: right bottom;
+		
+		水平： + 向右，- 向左
+		background-position: 50px 0;
+		background-position: -50px 0;
+		
+		垂直： + 向下， - 向上
+		background-position: 0 100px;
+		background-position: 0 -100px;
+		
+		没有设置的会默认居中
+		background-position: bottom;
+		
+	背景图缩放 background-size: 关键字/%/unit
+		cover: 等比例缩放以完全覆盖，可能一部分看不见
+		contain： 等比例缩放背景图片直到完全装入背景区，可能会有部分空白
+		
+	背景图固定 background-attachment： fixed
+		背景不会随着元素的内容滚动
+		
+	背景复合属性 background
+	
+显示模式
+块级元素(div)display: block
+	独占一行
+	宽度默认是100%
+	添加宽高属性生效
+	
+行内元素(span)display: inline
+	一行有多个，尺寸由内容撑开
+	宽高不生效
+	
+行内块元素(img)display: inline-block
+	一行有多个，尺寸由内容撑开
+	宽高可生效
+
+结构伪类选择器
+:first-child
+:last-child
+:nth-child(N)
+:nth-child(2N/2N + 1/n+5五个之后/-n+5 五个之前)
+
+伪元素选择器
+::before
+::after
+必须设置content: ""属性
+行内显示模式
+权重和标签选择器相同
+
+超链接的伪类选择器
+：hover
+:link 点击前
+:visited 点击后
+:active 点击时
+LVHA顺序
+
+CSS 特性
+继承
+	会继承父级的字体样式
+	
+层叠性
+	相同的属性会覆盖： 后面的CSS属性会覆盖前面的属性
+	不同的属性会叠加
+	
+优先级/权重
+	当一个标签用多个选择器的时候： 会有判断规则
+继承选择器	通配符选择器<标签选择器<类选择器<id选择器<行内样式<！important
+	
+	符合选择器： 叠加计算规则（一个标签被多个复合选择器选择）
+	行内样式，id选择器个数，类选择器个数，标签选择器个数
+	从左向右依次比较选个数，同一级个数多优先级高，如果个数相同，则向后比较
+
+：nth-child(2)第二个子级
+
+盒子模型： 外边距合并问题
+当上盒子设置下外边距，和下盒子设置上外边距时，外边距并不会相加，而是采用最大值，外边距重叠
+
+盒子模型： 外边距坍缩问题
+当子元素设置外边距时，会导致父元素外边距坍缩，坑爹，把他的位置拉下来
+解决方法： 
+1. 不用子元素margin，用父元素padding来代替
+2. 父元素设置overflow： hidden，浏览器会找到父元素的正确边边，然后修复
+3. 父元素设置border，浏览器也会找到父元素正确的边边，然后修复
+
+盒子模型： 行内元素的内外边距问题
+行内元素添加margin和padding，无法改变垂直的位置， 只能改变水平位置
+只能加line-height
+
+圆角
+border-radius: px/% 圆形的半径
+正圆形： 宽高的/2 or 50%
+胶囊形： 高度的一般
+
+阴影
+box-shadow: 
+x偏移量 y偏移量 模糊半径 扩散半径 颜色 内外阴影(内：inset)
+位移量  位移量  柔和度   大小
+
+Float布局
+float: left/right
+但是会影响高度坍缩和外边距坍缩的现象
+解决方法
+1. 额外标签法
+父元素内容最后加一个块级元素，设置css clear:both;
+
+2. 单伪元素法
+.clearfix::after {
+content: '';
+display: block;
+clear: both;
+}
+
+3. 双为元素法(before是为了解决外边距坍缩的现象，用来隔离子元素坑爹）
+.clearfix::before, 
+.clearfix::after {
+content: '';
+display: block;
+}
+
+.clearfix::after {
+clear: both;
+}
+
+4. overflow: hidden
+超出父级范围内的内容给修剪掉
+浏览器会检查父级范围，然后会检查父级的高，从而解决浮动问题
+
+Flex布局
+也叫弹性布局
+不会产生浮动布局中的托脱标现象
+Float demo
+<div class="box">
+	<div>1</div>
+	<div>2</div>
+	<div>3</div>
+</div>
+
+.box {
+height: 300px;
+border: 1px solid black;
+}
+
+.box div {
+float: left; （只要加了浮动，不在占用标准留的位置，如果不设高度，内容无法撑开父级盒子： 脱标带来的问题）
+margin: 50px; 
+width: 200px;
+height: 100px;
+background-color: pink;
+}
+
+代码要加到父级身上
+.box {
+display: flex;
+justify-content: space-between; (灵活，不用跟设计稿）
+height: 300px;（也可以不设高度）
+border: 1px solid black;
+}
+
+Flex的组成说明：
+设置方式：给父元素设置display:flex
+父级： 成为弹性容器，很多弹性属性都放在这
+子级： 成为弹性盒子
+主轴： 默认在水平方向
+侧轴： 默认在垂直方向
+main start ->main end
+cross size
+
+Float demo
+<div class="box">
+	<div>1</div>
+	<div>2</div>
+	<div>3</div>
+</div>
+
+.box {
+display: flex; （自动挤压和拉伸）
+
+height: 300px;
+border: 1px solid black;
+}
+
+.box div {
+width: 200px; （如果子级没有高，会自动充满父级盒子）
+height: 100px;
+background-color: pink
+}
+
+Flex布局: 调整主轴对其方式
+justify-content: 
+	flex-start; 靠左
+	flex-end; 靠右
+	center; 居中
+	space-between; 空白插在子级之间，最左和最右没有
+	space-around; 空白插在子级周围，最左和最右也有（小一点）
+	space-evenly;空白插在子级周围，各个间距都相等
+调整侧轴对齐方式
+align-items: 给容器内所有盒子，给父级弹性容器
+align-self： 单独控制某个盒子，给子级弹性盒子
+	stretch: 拉伸效果，默认会拉伸（如果父级没有设置高度）
+	center： 侧轴居中
+	flex-start： 靠上
+	flex-end： 考下
+
+修改主轴方向
+flex-direction: 
+	row;
+	column;
+	row-reverse;
+	column-reverse;
+	
+弹性伸缩比: 控制盒子主轴方向的尺寸
+flex-direction: row 就是控制宽度
+flex-column： column 控制高度
+flex： 整数数字， 占用剩余尺寸的份数 
+如果不给子级设置宽度，仅靠内容撑开
+
+弹性盒子换行
+flex-wrap: 
+	wrap;
+	nowrap;默认不换行
+
+行对齐方式（对单行没有效果）
+align-content： 
+	flex-start 靠上
+	flex-end 靠下
+	center 居中
+	space-between 空白插在子级之间
+	space-around 空白插在子级周围
+	space-evenly 空白插在子级， 平均
+	
+定位： 灵活改变盒子在网页中的位置
+position: 
+	absolute 绝对
+	子绝父相： 使用这个模式配合之后，无论子级如何改变，他都会出现在父级盒子的里面
+	1. 脱标，不占位置
+	2.  先找最近的一定为的祖先元素，如果所有祖先元素没有定位，就会参照浏览器可视区改变位置
+	3. 显示模式改变： 宽高生效（具备了行内块的特点）
+	
+	定位居中案例
+	1. 绝对定位
+	2. 水平，垂直边偏移50%
+	3. 子级向左上移动自身尺寸的一般
+		transform: translate(-50%, -50%)
+
+	relative 相对定位
+	单纯使用没有办法改位置
+	position: relative;
+	top: 100px;
+	left: 200px;
+	改变位置的参照物是子级原来的位置
+	不脱标，依然占位， 别的tag不会过来
+	不改变显示模式， 如果是块级，会有scroll条出现
+	一般和其他模式配合使用
+
+	fixed 固定
+	脱标，不占位置,位置会被占用
+	参照物为浏览器窗口
+	显示模式改变： 行内块
+
+边偏移属性： 
+	left
+	right
+	top
+	bottom
+	
+CSS精灵
+
+助理图标
+
+垂直对其方式
+行内块和行内标签都当作文字处理，基线对其
+如果图片和文字在同一行，则会基线对齐，然后英文字母y，g下面会有空位，导致图片下方也会有空白：
+
+vertical-align: 
+	baseline;
+	top; 最高内容的顶部
+	middle; 中间
+	bottom; 最高内容的底部
+消除空白也有另一个方法： display block
+
+Transition 过度属性 （符合属性）
+可以为一个元素在不同状态直接按切换的时候添加过度效果	
+属性值： 过度的属性 花费的时间
+具体的CSS属性/all
+
+Opacity 属性
+opacity: 0~1;
+
+光标类型cursor
+Cursor: 
+	default
+	pointer
+	text
+	move
+	
+
+Transform
+为元素添加动态效果，一般与过度配合使用
+	translate - 位移，像素单位/百分比（盒子自身尺寸）
+	tranform: translate(100px, 200px);
+	transform: translate(50%, 100%);
+	transfrom: translate(-50%, -100%);
+
+	rotate - 旋转，deg（+顺时，-逆时）
+	transform: rotate(360deg);
+	transform-origin - 改变转换原点
+		方位名词
+		像素
+		百分比
+		transform-origin: right bottom;
+		
+		时钟秒针
+		transform-origin: center bottom;
+	
+	多重转换，让transform作为符合属性，先平移在旋转
+	transform: translate() rotate();
+	如果先旋转在平移，会以螺旋方式到目的地： 因为旋转会改变坐标轴向
+	多重转换： 以第一种转换形态的坐标轴为准
+	如果拆开来写会覆盖，没法生效前面的效果，只能生效最后一个
+
+scale - 缩放
+	transform: scale(0.8);
+	transform: scale(x,y);
+
+skew - 倾斜
+	transform: skew(deg)
+
+background-image: linear-gradient()
+	线性渐变linear-gradient
+		渐变方向，(可选 to/角度）
+		颜色1 终点位置（可选，%），
+		颜色2 终点位置，
+		。。。
+		background-image: linear-gradient(
+			to right,
+			red,
+			green
+		);
+		background-image: linear-gradient(
+			45deg,
+			red,
+			green
+		);
+		background-image: linear-gradient(
+			red 80%,
+			green
+		);
+	径向渐变radial-gradient
+		通常给按钮添加高光效果
+		半径 at 圆心位置，（半径可以写2条成为椭圆，圆心位置：px/%/方位名词）
+		颜色1 终点位置，
+		颜色2 终点位置，
+		。。。
+		background-image: radial-gradient(
+			50px 20px at ceneter center,
+				这个20会变成x轴长，y轴短
+			red,
+			pink
+		)
+		background-image: radial-gradient(
+			50px at 50px 30px,
+				这个20会变成x轴长，y轴短
+			red,
+			pink
+		)
+	
+
+
+空间转换（3D转换）
+transform: translate3d(x, y, z)
+	一定要三个参数，否则不能生效
+transform: translateX();
+transform: translateY();
+transform: translateZ();
+
+在默认情况下Z轴的平移效果看不见，要用perspective
+perspective: 指定了观察者与z=0平面的距离， 为元素添加透视效果。
+近大远小，近实远虚
+一般设置800-1200
+	
+	.father {
+		perspective: 1000px;
+			它是相对于视距而产生相对效果，如果过大，效果不明显，如果太小，效果太明显
+			一定要在父级加，爷爷无法生效
+	}
+	
+	.son {
+		width: 
+		height: 
+		margin:
+		background-color: pink;
+		transition: all 0.5s;
+	}
+	
+	.son:hover {
+		transform: translateZ(-300px);
+	}
+	
+	<div class="father">
+		<div class="son"></div>
+	</div>
+	
+空间旋转
+transform: rotateZ()
+	由于主轴就是视线方向，所以和平面旋转效果是一样的
+	rotateX()
+	rotateY()
+	一定要放perspective 属性，不然只是压缩图片，看不到立体旋转
+	
+3D 呈现
+transform-style
+	flat - 子级处于平面中
+	preserve-3d - 子级处于3D空间
+使用步骤
+1. 父元素添加transform-style: preserve-3d;
+2. 子级定位
+3. 调整子盒子的位置（位移或旋转）
+
+示例： 
+	.cube {
+		width: 200px;
+		height: 200px;
+		margin: 100px auto;
+		background-color: pink;
+		transition: all 2s;
+		
+		transform-style: preserve-3d;
+	}
+	
+	.cube div {
+		width: 200px;
+		height: 200px;
+		
+		position: absolute;
+		top: 0;
+		left: 0;
+	}
+	
+	.front {
+		background-color: orange;
+		transform: translateZ(100px);
+	}
+	
+	.back {
+		background-color: green;
+		transform: translateZ(-100px);
+	}
+	
+	.cube:hover {
+		transform: rotateY(90deg);
+	}
+	
+	<div class="cube">
+		<div class="front"></div>
+		<div class="back"></div>
+	</div>
+	
+示例2：
+		ul {
+			margin: 0;
+			padding: 0;
+			list-style: none;
+		}
+
+		.nav {
+			width: 300px;
+			height: 40px;
+			margin: 50px auto;
+		}
+
+		.nav ul {
+			display: flex;
+		}
+
+		.nav li {
+			position: relative;
+			width: 100px;
+			height: 40px;
+			line-height: 40px;
+			transition: all 0.5s;
+
+			transform-style: preserve-3d;
+
+			/* 为了看到橙色和绿色的移动过程，给立方体添加旋转 */
+			/* transform: rotateX(-20deg) rotateY(30deg); */
+		}
+
+		.nav li a {
+			position: absolute;
+			left: 0;
+			top: 0;
+			display: block;
+			width: 100%;
+			height: 100%;
+			text-align: center;
+			text-decoration: none;
+			color: #fff;
+		}
+
+      /* 立方体每个面都有独立的坐标轴，互不影响 */
+        .nav li a:first-child {
+			background-color: green;
+			transform: translateZ(20px);
+        }
+
+		.nav li a:last-child {
+			background-color: orange;
+			transform: rotateX(90deg) translateZ(20px);
+		}
+
+		.nav li:hover {
+			transform: rotateX(-90deg);
+		}
+		
+		<div class="nav">
+      <ul>
+        <li>
+          <a href="#">首页</a>
+          <a href="#">Index</a>
+        </li>
+        <li>
+          <a href="#">登录</a>
+          <a href="#">Login</a>
+        </li>
+        <li>
+          <a href="#">注册</a>
+          <a href="#">Register</a>
+        </li>
+      </ul>
+    </div>
+	
+空间缩放
+	transform: scaleX(0.5);
+	transform: scaleY(2);
+	transform: scaleZ(3);
+
+动画 - 实现多个状态间的变化过程，动画过程可控
+使用步骤
+1. 定义
+	@keyframes 动画名称 {
+		from {}
+		to {}
+		
+		OR
+		
+	@keyframes 动画名称 {
+		0% {}
+		10% {}
+		...
+		100% {}
+	}
+	}
+2. 使用
+	animation: 动画名称 动画花费时长 速度曲线 延迟时间 重复次数      动画方向    执行完毕时状态
+	animation: change 1s        linear 1s     3/infinite alternate forward/backward(默认)
+	
+	OR
+	
+	animation-name
+	animation-duration
+	animation-delay:
+	animation-fill-mode: forward/backward
+	animation-timing-function: linear/steps/ease-in-out
+	animation-iteration-count
+	animation-direction: alternate
+	animation-play-state: paused (配合hover写，不直接加)
+	
+	示例1： 
+	img {
+		display: block;
+		width: 200px;
+	}
+	
+	.box {
+		width: 600px;
+		height: 112px;
+		border: 5px solid black;
+		margin: 100px auto;
+		overflow: hidden;
+	}
+	
+	.box ul {
+		display: flex;
+		animation: move 6s linear infinite;
+	}
+	
+	.box:hover ul{
+		animation-play-state: paused;
+	}
+	
+	@keyframes move {
+		0% {
+			transform: translate(0);
+		}
+		
+		100% {
+			transform: translate(-1400px);
+		}
+	}
+	
+	<div class="box">
+		<ul>
+			<li><img src="./images/1.jpg" alt=""></li>
+			<li><img src="./images/2.jpg" alt=""></li>
+			<li><img src="./images/3.jpg" alt=""></li>
+			<li><img src="./images/4.jpg" alt=""></li>
+			<li><img src="./images/5.jpg" alt=""></li>
+			<li><img src="./images/6.jpg" alt=""></li>
+			<li><img src="./images/7.jpg" alt=""></li>
+			
+			为了填报空白
+			<li><img src="./images/1.jpg" alt=""></li>
+			<li><img src="./images/2.jpg" alt=""></li>
+			<li><img src="./images/3.jpg" alt=""></li>
+		</ul>
+	</div>
+	
+	示例2： 
+	div {
+		width: 140px;
+		height: 140px;
+		border: 1px;
+		background-image: url(./images/bg.png);
+		animmation: run 1s steps(12) infinite;
+	}
+	
+	@keyframes run {
+		from {
+			background-position: 0 0;
+		}（如果动画开始状态样式和默认样式相同，可以忽略。
+		
+		to {
+		background-position: -1680px 0;
+		}
+	}
+	
+	多组动画: 
+		动画1， 包含动画名称，花费时长，速度曲线，方向等等。。。
+		动画2，
+		动画N
+	;
+	div {
+		width: 140px;
+		height: 140px;
+		border: 1px;
+		background-image: url(./images/bg.png);
+		animation: 
+			run 1s steps(12) infinite,
+			move 3s forwards
+	}
+	
+	@keyframes run {
+		to {
+			background-position: -1680px 0;
+		}
+	}
+
+	@keyframes move {
+		100% {
+			transform: translate(800px);
+		}
+	}
+	
+Web移动端
+宽度适配： 宽度自适应
+百分比布局
+flex布局
+
+等比适配
+rem
+vw
+
+rem： 相对单位于根字号计算结果
+html {
+	font-size: 30px;
+}
+
+div {
+	width: 5rem; will give 150px, but still cannot responsive because the root font-size ady fixed
+}
+
+rem + media query
+recommend: 将网页分成10分，html标签的字号是视口宽度的0.1
+@media (width: 375px) {
+	html {
+		font-size: 37.5px;
+	}
+}
+*How to transform px to rem?
+Ex: 68px in 375px geh screen
+N*37.5=68 find N
+
+VW & VH
+VW: viewport width (1/100视口宽度）
+VH: viewport height （1/100视口高度）
+
+能不能把vw和vh一起使用？
+不建议，因为有全面屏幕的手机（无frame）出现，导致高度变高，宽度不变，混合用会导致比例不对
+
+
+媒体查询完整写法
+@media 关键词        媒体类型                   and （媒体特性） {}
+       and/only/not screen/print/speech/all     width/height/min-height/min-width/max-height/max-width/orientation: landscape
+媒体查询link写法 - 将一种mediaquery的css写在另一个file然后link起来
+<link rel="stylesheet" media="逻辑符 媒体类型 and （媒体特性）" href="xx.css">
+
+Bootstrap
+1. 引入CSS文件
+
+2. 调用类名Container 响应式布局版心
+栅格系统： 用来实现响应式
+响应断点
+none	<576px
+sm		>=576px
+md		>=768px		如果要在这个范围里面放2个格子，则.col-md-6
+lg		>=992px   
+xl		>=1200px  
+xxl		>=1400px  
+要版心尺寸不一样才可能
+
+全局样式
+Button
+.btn 清除按钮默认的背景色，边框线等等
+.btn-success
+.btn-warning
+
+.btn-lg/btn-sm
+
+Table
+table
+table-striped 隔行变色
+table-success 表格颜色
+
+Components
+Copy paste then modify
+
+Bootstrap icons
+
+SEO搜索引擎优化
+提升SEO的常见方法
+竞价排名（花钱做优化）
+网页后缀设置成HTML
+标签语义化
+网页头部SEO标签设置合适的内容 （SEO工作人员给的）
+	title
+	description
+	keyword
