@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Document</title>
+		
+		<style>
+			img {
+				width: 100%;
+			}
+			
+			.box {
+				width: 249px;
+				height: 210px;
+				margin: 50px auto;
+			}
+			
+			.box p {
+				color: #3b3b3b;
+				padding: 10px 10x 0 10px;
+			}
+			
+			<!-- 摆放播放按钮，出现在图片区域 -->
+			<!-- hover效果：大按钮，看不见 -->
+			
+			.box li {
+				overflow: hidden;
+			}
+			
+			.pic {
+				position: relative;
+			}
+			
+			.pic::after {
+				position: absolute;
+				content: '';
+				width: 58px;
+				height: 58px;
+				background-images: url(./images/play.png);
+				
+				top: 50%;
+				left: 50%;
+				margin-left: -29px;
+				margin-top: -29px;
+					<!-- 这里不适用translate(-50%, -50%); 因为下面的会覆盖掉
+
+					如果坚持使用符合方式使用:
+					transform: translate() scale();则：hover之后也要写回一样的方法，否则：hover ：：after里的transform又会覆盖掉
+					-->
+				transfrom: scale(5);
+				opacity: 0;
+				transition: all 0.5s;
+			}
+			
+			li:hover .pic::after {
+				transfrom: scale(1);
+				opacity: 1;
+			} 
+			
+		</style>
+	</head>
+	
+	<body>
+		<div class="box">
+			<ul>
+				<li>
+					<div class="pic">
+						<img src="party.jpeg">
+					</div>
+					<p>【和平精英】“出火”音乐概念篇：四圣觉醒......</p>
+				</li>
+			</ul>
+		
+		</div>
+	</body>
+</html>
